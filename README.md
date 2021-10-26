@@ -1,6 +1,6 @@
 # OVERVIEW
 
-"qroxy" name is originated from concatenating "qr code" and "proxy" words, it will hopefully give idea of the project overview. In plain English it is a dynamic QR code generator REST API with a connected mongoDB to store routes.
+"qroxy" name is originated from concatenating "qr code" and "proxy" words, it will hopefully give idea of the project overview. In plain English, it is a dynamic QR code generator REST API with a connected mongoDB to store routes.
 
 [Live Demo](https://mhrsntrk.com/swissknife/qroxy)
 
