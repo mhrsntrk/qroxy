@@ -2,6 +2,8 @@
 
 "qroxy" name is originated from concatenating "qr code" and "proxy" words, it will hopefully give idea of the project overview. In plain English it is a dynamic QR code generator REST API with a connected mongoDB to store routes.
 
+[Live Demo](https://mhrsntrk.com/swissknife/qroxy)
+
 ### What is QR Code?
 
 A QR code stands for ‘Quick Response Code’ and it is a 2-dimensional barcode type invented by Denso Wave in 1994.
