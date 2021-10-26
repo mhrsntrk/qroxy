@@ -1,7 +1,7 @@
 {
   "name": "qroxy",
   "version": "0.0.1",
-  "description": "QR Code proxy application for dynamic QR Codes",
+  "description": "A dynamic QR Code generation REST API",
   "main": "index.js",
   "scripts": {
     "start": "nodemon server.js",

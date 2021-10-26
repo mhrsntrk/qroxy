@@ -3,7 +3,7 @@ const { MongoClient } = require("mongodb");
 require("dotenv").config();
 const { v1: uuidv1 } = require("uuid");
 
-async function generate(target) {
+async function generate(name, email, target) {
   const baseURL = process.env.BASE_URL;
   const mongoURI = process.env.MONGO_URI;
   const uuid = uuidv1();
@@ -34,6 +34,8 @@ async function generate(target) {
       url: url,
       code: qr,
       target: target,
+      name: name,
+      email: email,
       cratedAt: new Date(),
       updatedAt: new Date(),
     });

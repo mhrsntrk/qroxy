@@ -21,9 +21,11 @@ app.get("/:uuid", async function (req, res) {
 });
 
 app.post("/generate", async function (req, res) {
-  const target = req.body.target;
+  const name = req.body.generationName;
+  const email = req.body.generationEmail;
+  const target = req.body.generationTarget;
   if (validate.isUri(target)) {
-    const generated = await generate(target);
+    const generated = await generate(name, email, target);
     return res
       .status(201)
       .json({ target: target, url: generated.url, qr: generated.qr });
@@ -33,8 +35,8 @@ app.post("/generate", async function (req, res) {
 });
 
 app.post("/update", async function (req, res) {
-  const uuid = req.body.uuid;
-  const target = req.body.target;
+  const uuid = req.body.updateUUID;
+  const target = req.body.updateTarget;
   if (await check(uuid)) {
     if (validate.isUri(target)) {
       const updated = await update(uuid, target);
