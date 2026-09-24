@@ -16,4 +16,6 @@ yarn-debug.log*
 yarn-error.log*
 
 .env
-package-lock.json
+
+# local SQLite database
+data/

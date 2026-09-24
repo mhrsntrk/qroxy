@@ -1,6 +1,6 @@
 # OVERVIEW
 
-"qroxy" name is originated from concatenating "qr code" and "proxy" words, it will hopefully give idea of the project overview. In plain English, it is a dynamic QR code generator REST API with a connected mongoDB to store routes.
+"qroxy" name is originated from concatenating "qr code" and "proxy" words, it will hopefully give idea of the project overview. In plain English, it is a dynamic QR code generator REST API that stores routes in a single SQLite file.
 
 [Live Demo](https://mhrsntrk.com/swissknife/qroxy)
 
@@ -18,25 +18,26 @@ Dynamic QR Code is an editable QR code which enables you to redirect the URL to 
 
 ## Setup
 
+Requires Node.js 22.13 or newer (it uses the built-in `node:sqlite`). The only dependency is `qrcode`.
+
 ### 1. Clone the repo and install dependencies
 ```
 git clone https://github.com/mhrsntrk/qroxy.git
 cd qroxy
-yarn
+npm install
 ```
 
-### 2. Setup a mongoDB database
-When you generate your first entry it will be under qroxy database and qrcode collection.
+### 2. Configure (optional)
+| Variable | Default | Purpose |
+|---|---|---|
+| `PORT` | `5050` | HTTP port |
+| `BASE_URL` | `http://localhost:5050` | Public origin used in generated short URLs |
+| `DB_PATH` | `./data/qroxy.db` | SQLite file, created on first run |
 
-### 3. Create the .env file
+### 3. Run the project
 ```
-BASE_URL=http://localhost:5050
-PORT=5050
-MONGO_URI=mongodb://fill-it-with-your-own-uri
-```
-### 4. Run the project
-```
-yarn dev
+npm run dev     # restarts on change
+npm test        # API tests
 ```
 
 ## Example Requests
@@ -50,15 +51,22 @@ Host: qroxy.dev.mhrsntrk.com
 {"generationTarget":"https://mhrsntrk.com/","generationName":"Mahir Senturk","generationEmail":"m@mhrsntrk.com"}
 ```
 
-### 1. /update
+Response `201`: `{"target": "...", "url": "https://qroxy.dev.mhrsntrk.com/<uuid>", "qr": "data:image/png;base64,..."}`
+
+### 2. /update
 ```
 POST /update HTTP/1.1
 Content-Type: application/json; charset=utf-8
 Host: qroxy.dev.mhrsntrk.com
 
-{"target":"https://mhrsntrk.com/","uuid":"d55c3310-35a8-11ec-8f24-33733cb50609"}
+{"updateTarget":"https://mhrsntrk.com/","updateUUID":"d55c3310-35a8-11ec-8f24-33733cb50609"}
 ```
+
+Response `200`: `{"message": "Target URL successfully updated."}`. Errors are `400` with `{"message": "Invalid UUID"}` or `{"message": "Not a valid URL"}`.
+
+### 3. /:uuid
+`GET /<uuid>` redirects (`302`) to the current target, or returns `404` for an unknown code.
 
 # DEPLOY
 
-There is a Dockerfile on the repo, you can use it to deploy `qroxy` anywhere you like, I personally use [Caprover](https://caprover.com/).
+There is a Dockerfile on the repo, you can use it to deploy `qroxy` anywhere you like, I personally use [Caprover](https://caprover.com/). Mount a persistent volume at `/data` so the SQLite database survives redeploys.
